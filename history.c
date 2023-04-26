@@ -15,7 +15,7 @@ char *get_history_file(info_t *info)
 		return (NULL);
 	buf = malloc(sizeof(char) * (strlen(dir) + _strlen(HIST_FILE) +2));
 	if (!buf)
-		retrn (NULL);
+		return (NULL);
 	buf[0] = 0;
 	_strcpy(buf, dir);
 	_strcat(buf, "/");
@@ -39,7 +39,7 @@ int write_history(info_t *info)
 	if (!filename)
 		return (-1);
 
-	fd = open(filename, O_CREAT | O_TRUNIC | O_RDWR, 0644);
+	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	free(filename);
 	if (fd == -1)
 		return(-1);
@@ -62,11 +62,12 @@ int write_history(info_t *info)
  */
 
 int read_history(info_t *info)
+
 {
 	int i, last = 0,linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char =buf = NULL, *filename = get_history_file(info);
+	char *buf = NULL, *filename = get_history_file(info);
 
 	if (!filename)
 		return (0);
@@ -85,10 +86,10 @@ int read_history(info_t *info)
 	rdlen = read(fd, buf, fsize);
 	buf[fsize] =0;
 	if (rdlen <= 0)
-		return (free(bu), 0);
+		return (free(buf), 0);
 	close(fd);
 	for (i = 0; i < fsize; i++)
-		if (buff[i] == '\n')
+		if (buf[i] == '\n')
 		{
 			buf[i] = 0;
 			build_history_list(info, buf + last, linecount++);
@@ -97,7 +98,7 @@ int read_history(info_t *info)
 	if (last != i)
 		build_history_list(info, buf + last, linecount++);
 	free(buf);
-	info>histcount = linecount;
+	info->histcount = linecount;
 	while (info->histcount-- >= HIST_MAX)
 		delete_node_at_index(&(info->history), 0);
 	renumber_history(info);

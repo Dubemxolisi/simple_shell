@@ -7,7 +7,8 @@
  *
  * Return: 0 on success, 1 on error, or error code
  */
-int hsh(info_t *info, har **av)
+int hsh(info_t *info, char **av)
+
 {
 	ssize_t r = 0;
 	int builtin_ret = 0;
@@ -23,7 +24,7 @@ int hsh(info_t *info, har **av)
 		{
 			set_info(info, av);
 			builtin_ret = find_builtin(info);
-			if (builtin+ret == -1)
+			if (builtin_ret == -1)
 				find_cmd(info);
 		}
 		else if (interactive(info))
@@ -49,7 +50,9 @@ int hsh(info_t *info, har **av)
  *
  * Return: -1 if the builtin is not found, 0 if builtin is executed successfully, 1 if builtinis found but unsuccessful, 2 if builtin signalsexit()
  */
+
 int find_builtin(info_t *info)
+
 {
 	int i, built_in_ret = -1;
 	builtin_table builtintbl[] = {
@@ -57,10 +60,10 @@ int find_builtin(info_t *info)
 		{"evn", _myenv},
 		{"help", _myhelp},
 		{"history", _myhistory},
-		{"setenv" _mysetenv},
-		{"unsetenv" _myunsetenv},
+		{"setenv", _mysetenv},
+		{"unsetenv", _myunsetenv},
 		{"cd", _mycd},
-		{"alias", myalias},
+		{"alias", _myalias},
 		{NULL, NULL}
 	};
 
@@ -68,7 +71,7 @@ int find_builtin(info_t *info)
 		if (_strcmp(info->argv[0], builtintbl[i].type) == 0)
 		{
 			info->line_count++;
-			built_in_ret = builtintb[i].func(info);
+			built_in_ret = builtintbl[i].func(info);
 			break;
 		}
 	return (built_in_ret);
@@ -80,7 +83,9 @@ int find_builtin(info_t *info)
  *
  * Return: void
  */
+
 void find_cmd(info_t *info)
+
 {
 	char *path = NULL;
 	int i, k;
@@ -106,7 +111,7 @@ void find_cmd(info_t *info)
 	else
 	{
 		if ((interactive(info) || _getenv(info, "PATH=")
-					|| info->argv[0][0] == '/') && is_cm(info, info->argv[0]))
+					|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
 			fork_cmd(info);
 		else if (*(info->arg) != '\n')
 		{
