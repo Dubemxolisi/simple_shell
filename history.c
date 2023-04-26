@@ -3,7 +3,7 @@
 /**
  * get_history_file - it fetches the history file
  * @info: its a parameter struct
- * Return: allocated string containing the history file 
+ * Return: allocated string containing the history file
  */
 
 char *get_history_file(info_t *info)
@@ -13,7 +13,7 @@ char *get_history_file(info_t *info)
 	dir = _getenv(info, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (strlen(dir) + _strlen(HIST_FILE) +2));
+	buf = malloc(sizeof(char) * (strlen(dir) + _strlen(HIST_FILE) + 2));
 	if (!buf)
 		return (NULL);
 	buf[0] = 0;
@@ -25,10 +25,10 @@ char *get_history_file(info_t *info)
 
 /**
  * write_history - it creates a file, or adds to an existing file
- * @info: its a parameter struct 
+ * @info: its a parameter struct
  *
  * Return: 1 on success, else -1
- O*/
+ */
 
 int write_history(info_t *info)
 {
@@ -42,7 +42,7 @@ int write_history(info_t *info)
 	fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	free(filename);
 	if (fd == -1)
-		return(-1);
+		return (-1);
 	for (node = info->history; node; node = node->next)
 	{
 		_putsfd(node->str, fd);
@@ -55,16 +55,15 @@ int write_history(info_t *info)
 
 
 /**
- * read_history - it reads the history from the file 
- * @info - its a parameter struct
- *
- * Return: histcount on success, otherwise 0 
+ * read_history - it reads history from the file
+ * @info: its the parameter struct
+ * Return: histcount on success otherwise o
  */
 
 int read_history(info_t *info)
 
 {
-	int i, last = 0,linecount = 0;
+	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
 	char *buf = NULL, *filename = get_history_file(info);
@@ -84,7 +83,7 @@ int read_history(info_t *info)
 	if (!buf)
 		return (0);
 	rdlen = read(fd, buf, fsize);
-	buf[fsize] =0;
+	buf[fsize] = 0;
 	if (rdlen <= 0)
 		return (free(buf), 0);
 	close(fd);
@@ -106,22 +105,25 @@ int read_history(info_t *info)
 }
 
 /**
- * build_history_list - it adds entry to a linked history list 
- * @info: It is a structure containing potential arguments and is used to maintain
- * @buf: is a buffer
- *
- * REturn: 0 Always
+ *build_history_list - it adds entry to a history linked list
+ *@info: It is a structure containing potential arguments
+ *and is used to maintain
+ *@buf: is a buffer
+ *@linecount: its the history linecount
+ *REturn: 0 Always
  */
 
 int build_history_list(info_t *info, char *buf, int linecount)
+
 {
 	list_t *node = NULL;
 
 	if (info->history)
+	{
 		node = info->history;
 	add_node_end(&node, buf, linecount);
-
-	if(!info->history)
+	}
+	if (!info->history)
 		info->history = node;
 	return (0);
 }

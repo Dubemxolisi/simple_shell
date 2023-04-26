@@ -27,9 +27,9 @@ int hsh(info_t *info, char **av)
 			if (builtin_ret == -1)
 				find_cmd(info);
 		}
-		else if (interactive(info))
-		       _putchar('\n');
-		free_info(info, 0);
+else if (interactive(info))
+_putchar('\n');
+free_info(info, 0);
 	}
 	write_history(info);
 	free_info(info, 1);
@@ -48,7 +48,10 @@ int hsh(info_t *info, char **av)
  * find_builtin - it finds a builtin command
  * @info: it a parameter & return info struct
  *
- * Return: -1 if the builtin is not found, 0 if builtin is executed successfully, 1 if builtinis found but unsuccessful, 2 if builtin signalsexit()
+ * Return: -1 if the builtin is not found,
+ * 0 if builtin is executed successfully,
+ * 1 if builtinis found but unsuccessful,
+ * 2 if builtin signalsexit()
  */
 
 int find_builtin(info_t *info)
